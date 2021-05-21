@@ -1,0 +1,117 @@
+#:import MainMenu ui.main_menu.main_menu.MainMenu
+#:import NavigationItem main_ui.NavigationItem
+#:import ContentNavigationDrawer main_ui.ContentNavigationDrawer
+
+#:include ui/main_menu/main_menu.kv
+
+Screen:
+    NavigationLayout:
+        ScreenManager:
+            id: sm
+            MainMenu:
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            #width: dp(230) + Window.width * 0
+            ContentNavigationDrawer:
+                id: content_drawer
+
+
+<ContentNavigationDrawer>
+    #drawer_logo: 'avatar.jpg'
+    #user_name: app.user.nick
+    #user_icon_source: app.user.rank_icon
+    orientation:    "vertical"
+    MDIconButton:
+        icon: "close"
+        #x: app.root.parent.x + dp(10)
+        pos_hint: {"top": 1}
+        on_release: app.root.ids.nav_drawer.toggle_nav_drawer()
+    BoxLayout:
+        size_hint: (1, .45)
+        orientation: 'vertical'
+        padding:    5
+        canvas:
+            Color:
+                #rgba: root.parent.parent.theme_cls.divider_color
+                rgba: app.theme_cls.divider_color
+            Line:
+                points: self.x, self.y, self.x+self.width,self.y
+        BoxLayout:
+            orientation:    'horizontal'
+
+            Widget:
+                size_hint_x:    0.01
+            AsyncImage:
+                id:     avatar
+                allow_stretch:  True
+        BoxLayout:
+            size_hint: (1, 0.3)
+            AsyncImage:
+                id: rank_icon
+                #source: root.user_icon_source
+                size_hint_y: None
+                height: dp(35)
+                allow_stretch: True
+                size_hint_x: 0.3
+            MDLabel:
+                size_hint_x: 0.7
+                id: user_name
+                #text: root.user_name
+                size_hint_y: None
+                height: self.texture_size[1]
+                markup: True
+                theme_text_color: 'Primary'
+                font_size:  '27dp'
+                font_name:  "data/Grobe.ttf"
+                halign:     "left"
+                valign:     "center"
+                text_size:  self.size
+    MDLabel:
+        id: drawer_title
+        font_style: 'H6'
+        size_hint_y: None
+        height: self.texture_size[1]
+        markup: True
+        theme_text_color: 'Primary'
+    ScrollView:
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+            NavigationItem:
+                text: "Your army"
+                icon: 'home'
+                on_press: app.root.ids.sm.current = "main_menu"
+                on_press: app.root.ids.sm.get_screen('another_user').from_where = 1
+                on_release: app.root.ids.nav_drawer.set_state("close", animation=True)
+            NavigationItem:
+                text: "Add new vehicle"
+                icon: 'plus-one'
+                on_press: app.go_to_add_menu() #app.root.current = "add_menu_1"
+                on_release: app.root.ids.nav_drawer.set_state("close", animation=True)
+            NavigationItem:
+                text: "Friends"
+                icon: 'account-multiple'
+                on_release: app.root.ids.nav_drawer.set_state("close", animation=True)
+            NavigationItem:
+                text: "Leaderboard"
+                icon: 'podium'
+                on_press:   app.go_to_leaderboard()
+                on_release: app.root.ids.nav_drawer.set_state("close", animation=True)
+            NavigationItem:
+                text: "Search"
+                icon: 'magnify'
+                on_press:   go_to_search()
+                on_release: app.root.ids.nav_drawer.set_state("close", animation=True)
+            NavigationItem:
+                text: "Settings"
+                icon: 'settings'
+                on_press:   app.go_to_settings()
+                on_release: app.root.ids.nav_drawer.set_state("close", animation=True)
+            NavigationItem:
+                text: "Logout"
+                icon: 'export'
+                on_press:   app.logout()
+                on_press:   app.user = None
+                on_release: app.root.ids.nav_drawer.set_state("close", animation=True)

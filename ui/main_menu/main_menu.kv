@@ -1,0 +1,18 @@
+<MainMenu>
+    id: main_menu
+    name: "main_menu"
+    MainPage:
+        id: content
+
+
+<MainPage@BoxLayout>
+    #drawer_logo:    "avatar.jpg"
+    orientation: 'vertical'
+    MDToolbar:
+        title: "Главное меню"
+        md_bg_color: app.theme_cls.primary_color
+        elevation: 5
+        size_hint_y: 0.07
+        left_action_items: [['menu', lambda x: app.root.ids.nav_drawer.toggle_nav_drawer()]]
+    Label:
+        text:   'OLOLO'
